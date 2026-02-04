@@ -15,10 +15,20 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh 'npm run build'
+<<<<<<< HEAD
+=======
+                }
+            }
+        }stage('Backend Build') {
+            steps {
+                dir('backend') {
+                    sh './mvnw clean package -DskipTests'
+>>>>>>> 64ea8b3 (Merge local work after pull)
                 }
             }
         }
 
+<<<<<<< HEAD
         stage('Backend Build') {
             steps {
                 dir('backend') {
@@ -27,6 +37,8 @@ pipeline {
             }
         }
 
+=======
+>>>>>>> 64ea8b3 (Merge local work after pull)
     }
 
     post {

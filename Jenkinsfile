@@ -1,36 +1,26 @@
 pipeline {
     agent any
 
-    stages {
-
-        stage('Install Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                }
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm run build'
-                }
-            }
-        }
-
-        stage('Backend Build') {
-            steps {
-                dir('backend') {
-                    sh './mvnw clean package -DskipTests'
-                }
-            }
-        }
-
+    tools {
+        jdk 'JDK21'
+        maven 'maven'
     }
-post {
-        always {
-            echo "Pipeline terminé"
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/oussamasebai593/angular-springboot-ecommerce.git'
+            }
+        }
+    stage('Compile') {
+        steps {
+            dir('backend') {
+            sh 'mvn clean compile'
+        }
+            }
         }
     }
 }
+
+

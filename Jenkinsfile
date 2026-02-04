@@ -1,50 +1,37 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "backend:latest"
-    }
+    stages {
 
-  
-
-        stage('Build Docker Image') {
+        stage('Install Frontend') {
             steps {
-                script {
-                    sh 'docker build -t $DOCKER_IMAGE .'
+                dir('frontend') {
+                    sh 'npm install'
                 }
             }
         }
 
-        stage('Run Tests') {
+        stage('Build Frontend') {
             steps {
-                script {
-                    // Si tu as des tests Maven
-                    sh 'docker run --rm $DOCKER_IMAGE mvn test'
+                dir('frontend') {
+                    sh 'npm run build'
                 }
             }
         }
 
-        stage('Docker Compose Up') {
+        stage('Backend Build') {
             steps {
-                script {
-                    sh 'docker-compose up -d --build'
+                dir('backend') {
+                    sh './mvnw clean package -DskipTests'
                 }
             }
         }
 
-        stage('Docker Compose Down') {
-            steps {
-                script {
-                    sh 'docker-compose down'
-                }
-            }
-        }
     }
 
     post {
         always {
-            echo 'Pipeline terminé'
+            echo "Pipeline terminé"
         }
     }
 }
-

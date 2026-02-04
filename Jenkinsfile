@@ -5,12 +5,7 @@ pipeline {
         DOCKER_IMAGE = "backend:latest"
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/ton-repo/backend.git'
-            }
-        }
+  
 
         stage('Build Docker Image') {
             steps {
